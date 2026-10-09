@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Baptism Invitation - Xhin Hailey C. Verdadero</title>
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Great+Vibes&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary-rose: #9E5268;
+            --soft-rose: #D8A4B1;
+            --light-pink: #FAF0F3;
+            --accent-gold: #C59B3F;
+            --text-dark: #4A3A3E;
+            --bg-cream: #FAF7F2;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--bg-cream);
+            color: var(--text-dark);
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Music Floating Toggle Button */
+        .music-control-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: var(--primary-rose);
+            color: white;
+            border: 2px solid #fff;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .music-control-btn:hover {
+            transform: scale(1.08);
+            background-color: #833e52;
+        }
+
+        /* Falling Petals Background Canvas */
+        #petal-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 99;
+        }
+
+        /* Ambient Floral Corners */
+        .floral-corner {
+            position: fixed;
+            width: 260px;
+            height: 260px;
+            pointer-events: none;
+            z-index: 10;
+            opacity: 0.85;
+            background-repeat: no-repeat;
+            background-size: contain;
+        }
+        .top-left {
+            top: 0;
+            left: 0;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="18" fill="%23e8a7b8" opacity="0.6"/><circle cx="45" cy="15" r="12" fill="%23c27d90" opacity="0.5"/><path d="M0 0 Q 60 20 80 80 Q 20 60 0 0 Z" fill="%23d892a4" opacity="0.4"/></svg>');
+        }
+        .top-right {
+            top: 0;
+            right: 0;
+            transform: scaleX(-1);
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="18" fill="%23e8a7b8" opacity="0.6"/><circle cx="45" cy="15" r="12" fill="%23c27d90" opacity="0.5"/><path d="M0 0 Q 60 20 80 80 Q 20 60 0 0 Z" fill="%23d892a4" opacity="0.4"/></svg>');
+        }
+        .bottom-left {
+            bottom: 0;
+            left: 0;
+            transform: scaleY(-1);
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="18" fill="%23e8a7b8" opacity="0.6"/><circle cx="45" cy="15" r="12" fill="%23c27d90" opacity="0.5"/><path d="M0 0 Q 60 20 80 80 Q 20 60 0 0 Z" fill="%23d892a4" opacity="0.4"/></svg>');
+        }
+        .bottom-right {
+            bottom: 0;
+            right: 0;
+            transform: scale(-1, -1);
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="18" fill="%23e8a7b8" opacity="0.6"/><circle cx="45" cy="15" r="12" fill="%23c27d90" opacity="0.5"/><path d="M0 0 Q 60 20 80 80 Q 20 60 0 0 Z" fill="%23d892a4" opacity="0.4"/></svg>');
+        }
+
+        /* 1ST PAGE: Landing Hero Screen */
+        #landing-screen {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem;
+            position: relative;
+            z-index: 20;
+            background: radial-gradient(circle, rgba(255,255,255,0.95) 0%, rgba(250,247,242,0.9) 100%);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .hero-badge {
+            font-size: 0.85rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--primary-rose);
+            border-bottom: 2px solid var(--soft-rose);
+            padding-bottom: 5px;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .hero-title {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 2.2rem;
+            color: var(--primary-rose);
+            letter-spacing: 2px;
+            margin-bottom: 1.5rem;
+            line-height: 1.3;
+        }
+
+        .hero-subtitle {
+            font-family: 'Great Vibes', cursive;
+            font-size: 3.5rem;
+            color: var(--accent-gold);
+            margin-bottom: 2.5rem;
+        }
+
+        .btn-see-invitation {
+            background-color: var(--primary-rose);
+            color: #fff;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            letter-spacing: 2px;
+            padding: 14px 36px;
+            border-radius: 50px;
+            border: none;
+            box-shadow: 0 8px 25px rgba(158, 82, 104, 0.25);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            animation: pulse-btn 2s infinite;
+        }
+
+        .btn-see-invitation:hover {
+            background-color: #833e52;
+            color: #fff;
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(158, 82, 104, 0.35);
+        }
+
+        @keyframes pulse-btn {
+            0% { box-shadow: 0 0 0 0 rgba(158, 82, 104, 0.4); }
+            70% { box-shadow: 0 0 0 18px rgba(158, 82, 104, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(158, 82, 104, 0); }
+        }
+
+        /* 2ND PAGE: Main Content Container */
+        #main-content {
+            display: none;
+            opacity: 0;
+            transition: opacity 1s ease-in;
+            padding: 20px 15px 60px 15px;
+            z-index: 20;
+            position: relative;
+        }
+
+        .invitation-card {
+            max-width: 680px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 24px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.04);
+            padding: 40px 30px;
+            position: relative;
+            border: 1px solid rgba(216, 164, 177, 0.3);
+            background-image: radial-gradient(#faf0f3 1.2px, transparent 1.2px);
+            background-size: 20px 20px;
+        }
+
+        /* Baby Photo Section */
+        .baby-photo-wrapper {
+            position: relative;
+            width: 220px;
+            height: 220px;
+            margin: 0 auto 25px auto;
+        }
+
+        .baby-photo-ring {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            padding: 8px;
+            background: linear-gradient(135deg, #f5cad6, #ffffff, #e3b0bd);
+            box-shadow: 0 8px 25px rgba(158, 82, 104, 0.15);
+            position: relative;
+        }
+
+        .baby-photo-img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #fff;
+        }
+
+        .floral-accent-ring {
+            position: absolute;
+            top: -12px;
+            left: -12px;
+            right: -12px;
+            bottom: -12px;
+            border-radius: 50%;
+            border: 2px dashed var(--soft-rose);
+            pointer-events: none;
+            animation: rotate-ring 40s linear infinite;
+        }
+
+        @keyframes rotate-ring {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Text Typography */
+        .text-subtitle-calligraphy {
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            font-size: 1.5rem;
+            color: #7a6368;
+            margin-bottom: 0;
+        }
+
+        .text-main-heading {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.2rem;
+            color: var(--primary-rose);
+            margin-bottom: 10px;
+        }
+
+        .baby-name {
+            font-family: 'Alex Brush', cursive;
+            font-size: 3.5rem;
+            color: var(--accent-gold);
+            line-height: 1.2;
+            margin: 15px 0 25px 0;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.03);
+        }
+
+        /* Event Details Box */
+        .event-details-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 25px 0;
+            border-top: 1px solid var(--soft-rose);
+            border-bottom: 1px solid var(--soft-rose);
+            padding: 15px 0;
+        }
+
+        .event-detail-item {
+            padding: 0 20px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            color: var(--primary-rose);
+            font-size: 1.05rem;
+            letter-spacing: 1px;
+        }
+
+        .event-day-large {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 3rem;
+            color: var(--accent-gold);
+            font-weight: 700;
+            line-height: 1;
+            padding: 0 15px;
+        }
+
+        .venue-text {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.4rem;
+            color: var(--text-dark);
+            line-height: 1.4;
+            margin-top: 20px;
+        }
+
+        .tagline-text {
+            font-family: 'Alex Brush', cursive;
+            font-size: 2.4rem;
+            color: var(--accent-gold);
+            margin: 30px 0 20px 0;
+        }
+
+        /* Ninong & Ninang Section */
+        .godparents-section {
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 2px dashed rgba(216, 164, 177, 0.4);
+        }
+
+        .godparents-title {
+            font-family: 'Alex Brush', cursive;
+            font-size: 3.8rem;
+            color: var(--primary-rose);
+            margin-bottom: 15px;
+        }
+
+        .title-divider {
+            width: 180px;
+            height: 2px;
+            background-color: var(--accent-gold);
+            margin: 0 auto 35px auto;
+        }
+
+        .godparents-column-header {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 1.05rem;
+            letter-spacing: 2px;
+            color: var(--primary-rose);
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--soft-rose);
+            display: inline-block;
+            padding-bottom: 5px;
+        }
+
+        .godparents-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .godparents-list li {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: var(--primary-rose);
+            letter-spacing: 0.5px;
+            margin-bottom: 18px;
+            text-transform: uppercase;
+        }
+
+        /* Action Buttons */
+        .action-buttons-group {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 35px;
+        }
+
+        .btn-custom-outline {
+            border: 1.5px solid var(--primary-rose);
+            color: var(--primary-rose);
+            background: transparent;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 600;
+            padding: 10px 20px;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-custom-outline:hover {
+            background-color: var(--primary-rose);
+            color: #fff;
+            transform: translateY(-2px);
+        }
+
+        /* Media Queries */
+        @media (max-width: 576px) {
+            .hero-title { font-size: 1.6rem; }
+            .hero-subtitle { font-size: 2.8rem; }
+            .baby-name { font-size: 2.8rem; }
+            .godparents-title { font-size: 3rem; }
+            .event-detail-item { font-size: 0.95rem; padding: 0 8px; }
+            .event-day-large { font-size: 2.4rem; padding: 0 8px; }
+            .godparents-list li { font-size: 0.85rem; margin-bottom: 14px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Local MP3 Audio Track -->
+    <audio id="bg-music" loop preload="auto">
+        <source src="baby-music.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Floating Music Toggle Button -->
+    <button class="music-control-btn" id="music-toggle" onclick="toggleMusic()" title="Toggle Background Music">
+        <i class="fa-solid fa-music" id="music-icon"></i>
+    </button>
+
+    <!-- Falling Petals Canvas -->
+    <canvas id="petal-canvas"></canvas>
+
+    <!-- Ambient Corner Backgrounds -->
+    <div class="floral-corner top-left"></div>
+    <div class="floral-corner top-right"></div>
+    <div class="floral-corner bottom-left"></div>
+    <div class="floral-corner bottom-right"></div>
+
+    <!-- PAGE 1: LANDING HERO COVER SCREEN -->
+    <div id="landing-screen">
+        <div class="hero-badge">You are officially invited</div>
+        <h1 class="hero-title">YOU'RE INVITED TO<br>HAILEY'S BAPTISM</h1>
+        <div class="hero-subtitle">Xhin Hailey C. Verdadero</div>
+        <button class="btn-see-invitation" onclick="showInvitation()">
+            <i class="fa-solid fa-envelope-open-text me-2"></i>SEE INVITATION
+        </button>
+    </div>
+
+    <!-- PAGE 2: MAIN INVITATION CONTENT -->
+    <div id="main-content" class="container">
+        <div class="invitation-card text-center">
+            
+            <!-- Baby Photo -->
+            <div class="baby-photo-wrapper">
+                <div class="floral-accent-ring"></div>
+                <div class="baby-photo-ring">
+                    <img id="baby-img" src="hailey1.jpg" alt="Xhin Hailey C. Verdadero" class="baby-photo-img" onerror="this.src='https://images.unsplash.com/photo-1519689680058-324335c77eba?auto=format&fit=crop&w=500&q=80'">
+                </div>
+            </div>
+
+            <!-- Header Titles -->
+            <p class="text-subtitle-calligraphy">Please Join us for the</p>
+            <h2 class="text-main-heading">Baptism of</h2>
+            <div class="baby-name">Xhin Hailey C. Verdadero</div>
+
+            <!-- Date & Time Row -->
+            <div class="event-details-row">
+                <span class="event-detail-item">OCTOBER</span>
+                <span class="event-day-large">25</span>
+                <span class="event-detail-item">10:30 AM</span>
+            </div>
+
+            <!-- Venue Address -->
+            <div class="venue-text">
+                San Jose Parish Church,<br>
+                Navotas City
+            </div>
+
+            <!-- Appreciate Tagline -->
+            <div class="tagline-text">
+                We appreciate your presence
+            </div>
+
+            <!-- NINONG & NINANG SECTION -->
+            <div class="godparents-section">
+                <h3 class="godparents-title">Ninong & Ninang</h3>
+                <div class="title-divider"></div>
+
+                <div class="row text-center mt-4">
+                    <!-- LEFT COLUMN: NINONG -->
+                    <div class="col-6">
+                        <div class="godparents-column-header">NINONG</div>
+                        <ul class="godparents-list">
+                            <li>CHRISDAN REYES</li>
+                            <li>ARJAY TABORADA</li>
+                            <li>ARTEMIO VERDADERO JR.</li>
+                            <li>KURT LEON MATA</li>
+                            <li>RAVE ENOB TELIC</li>
+                            <li>CHRISTIAN BULANADI</li>
+                        </ul>
+                    </div>
+
+                    <!-- RIGHT COLUMN: NINANG -->
+                    <div class="col-6">
+                        <div class="godparents-column-header">NINANG</div>
+                        <ul class="godparents-list">
+                            <li>JACQUILENE ENSOMO</li>
+                            <li>EDEN MUTAS</li>
+                            <li>JOANNA ROSIALDA</li>
+                            <li>MHYKA GALANG</li>
+                            <li>TIFFANY SHAIN CRUZ</li>
+                            <li>MA. LIDA MALTO DES</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="action-buttons-group">
+                <a href="https://maps.google.com/?q=San+Jose+Parish+Church,+M.+Naval+St,+San+Jose,+Navotas,+Metro+Manila" target="_blank" class="btn-custom-outline">
+                    <i class="fa-solid fa-location-dot"></i> Google Maps Pinpoint
+                </a>
+                <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Xhin+Hailey+C.+Verdadero+Baptism&dates=20261025T023000Z/20261025T043000Z&details=Baptism+of+Xhin+Hailey+C.+Verdadero&location=San+Jose+Parish+Church,+M.+Naval+St,+San+Jose,+Navotas,+Metro+Manila" target="_blank" class="btn-custom-outline">
+                    <i class="fa-solid fa-calendar-plus"></i> Add to Calendar
+                </a>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/bootstrap.bundle.min.js"></script>
+
+    <script>
+        const audio = document.getElementById('bg-music');
+        const musicIcon = document.getElementById('music-icon');
+
+        // Soft, comfortable volume (40%)
+        audio.volume = 0.4;
+
+        function toggleMusic() {
+            if (audio.paused) {
+                audio.play().then(() => {
+                    musicIcon.className = 'fa-solid fa-music';
+                }).catch(err => {
+                    alert("Please make sure 'baby-music.mp3' is placed in the same folder as index.html");
+                });
+            } else {
+                audio.pause();
+                musicIcon.className = 'fa-solid fa-volume-xmark';
+            }
+        }
+
+        function showInvitation() {
+            const landing = document.getElementById('landing-screen');
+            const main = document.getElementById('main-content');
+            
+            // Play audio on button interaction
+            audio.play().then(() => {
+                musicIcon.className = 'fa-solid fa-music';
+            }).catch(e => {
+                console.log("Audio file missing or blocked:", e);
+            });
+
+            landing.style.opacity = '0';
+            landing.style.transform = 'translateY(-20px)';
+            
+            setTimeout(() => {
+                landing.style.display = 'none';
+                main.style.display = 'block';
+                setTimeout(() => {
+                    main.style.opacity = '1';
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }, 50);
+            }, 600);
+        }
+
+        // Falling Flower Petals Canvas Animation
+        const canvas = document.getElementById('petal-canvas');
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        const petals = [];
+        const numPetals = 25;
+
+        class Petal {
+            constructor() {
+                this.reset();
+            }
+
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * -canvas.height;
+                this.size = Math.random() * 8 + 6;
+                this.speedY = Math.random() * 1.2 + 0.8;
+                this.speedX = Math.random() * 0.8 - 0.4;
+                this.angle = Math.random() * 360;
+                this.spin = Math.random() * 2 - 1;
+                this.opacity = Math.random() * 0.5 + 0.3;
+                this.color = ['#f3cad6', '#d8a4b1', '#faf0f3', '#e8b8c5'][Math.floor(Math.random() * 4)];
+            }
+
+            update() {
+                this.y += this.speedY;
+                this.x += Math.sin(this.y * 0.01) + this.speedX;
+                this.angle += this.spin;
+
+                if (this.y > canvas.height + 20) {
+                    this.reset();
+                }
+            }
+
+            draw() {
+                ctx.save();
+                ctx.translate(this.x, this.y);
+                ctx.rotate((this.angle * Math.PI) / 180);
+                ctx.globalAlpha = this.opacity;
+                ctx.fillStyle = this.color;
+                
+                ctx.beginPath();
+                ctx.ellipse(0, 0, this.size, this.size / 2, 0, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+            }
+        }
+
+        for (let i = 0; i < numPetals; i++) {
+            petals.push(new Petal());
+        }
+
+        function animatePetals() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            petals.forEach(petal => {
+                petal.update();
+                petal.draw();
+            });
+            requestAnimationFrame(animatePetals);
+        }
+
+        animatePetals();
+    </script>
+</body>
+</html>
